@@ -1,0 +1,42 @@
+# Enforces merge rules:
+# - Only dev or development can merge into main
+# - dev/development can receive PRs from any branch except main
+# Combine with branch protection (Settings → Branches) to block direct pushes.
+name: Branch Rules
+
+on:
+  pull_request:
+    branches: [main, master, development, dev]
+
+jobs:
+  validate-merge-rules:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate merge rules
+        run: |
+          # Lethabo-T-Molefe can bypass all merge rules
+          if [[ "${{ github.actor }}" == "Lethabo-T-Molefe" ]]; then
+            echo "Lethabo-T-Molefe is allowed to bypass merge rules"
+            exit 0
+          fi
+          
+          BASE="${{ github.event.pull_request.base.ref }}"
+          HEAD="${{ github.event.pull_request.head.ref }}"
+          
+          # PR targeting main: source must be dev or development
+          if [[ "$BASE" == "main" || "$BASE" == "master" ]]; then
+            if [[ "$HEAD" != "dev" && "$HEAD" != "development" ]]; then
+              echo "::error::PRs to main can only come from dev or development. Current source: $HEAD"
+              exit 1
+            fi
+          fi
+          
+          # PR targeting dev/development: source must NOT be main
+          if [[ "$BASE" == "dev" || "$BASE" == "development" ]]; then
+            if [[ "$HEAD" == "main" || "$HEAD" == "master" ]]; then
+              echo "::error::PRs to dev/development cannot come from main. Use a feature branch."
+              exit 1
+            fi
+          fi
+          
+          echo "Merge rules OK: $HEAD -> $BASE"

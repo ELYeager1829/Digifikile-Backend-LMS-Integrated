@@ -1,0 +1,100 @@
+dotnet-memo.txt
+=============
+REPO ROOT ON DISK: c:\Users\230986746\Documents\DigiFikileLms\DigiFikile-LMS.Backend
+
+WHAT I CAN SEE RIGHT NOW (after the complaint feature was finished):
+- DigiFikileLms.API
+    - Controllers\ComplaintsController.cs (SystemAdministrator-only; AuthController/Program.cs already
+      have the handler registrations if you used native DI)
+    - Program.cs uses native DI; controllers are discovered via AddControllers
+    - Properties\launchSettings.json exists (ports in here), .env exists with ConnectionStrings__DigiFikileLmsDb
+- DigiFikileLms.Application
+    - Features\Complaints\Commands\ComplaintCommands.cs
+        - LayComplaintCommand
+        - UpdateComplaintStatusCommand
+    - Features\Complaints\Queries\ComplaintQueries.cs
+        - GetAllComplaintsQuery
+        - GetComplaintByIdQuery
+        - GetMyComplaintsQuery
+    - Features\Complaints\Handlers\ComplaintHandlers.cs
+        - LayComplaintCommandHandler
+        - UpdateComplaintStatusCommandHandler
+        - GetAllComplaintsQueryHandler
+        - GetComplaintByIdQueryHandler
+        - GetMyComplaintsQueryHandler
+        - ComplaintMapper (internal)
+    - DTOs\Complaint\ComplaintDto.cs
+        - LayComplaintRequestDto
+        - UpdateComplaintStatusRequestDto
+        - ComplaintDto
+    - Common\BaseResponse.cs etc.
+- DigiFikileLms.Domain
+    - Entities\Complaint.cs
+        - ComplainantUserId, Title, Description, Category, Status, ResolutionNotes, ResolvedAt
+        - Complainant (UserAccount)
+    - Enums\ComplaintStatus.cs
+        - Open = 1
+        - InReview = 2
+        - Resolved = 3
+        - Dismissed = 4
+    - Interfaces\IComplaintRepository.cs
+        - GetByIdAsync
+        - GetAllAsync(ComplaintStatus? status = null)
+        - GetByComplainantAsync
+        - AddAsync
+        - SaveChangesAsync
+- DigiFikileLms.Infrastructure
+    - Persistence\Context\DigiFikileLmsDbContext.cs
+        - DbSet<Complaint> Complaints
+    - Persistence\Configurations\ComplaintConfiguration.cs
+        - Table: complaints
+        - Status -> HasConversion<string>()
+        - Complainant -> reference
+    - Persistence\Repositories\ComplaintRepository.cs
+        - implements IComplaintRepository
+    - Persistence\Migrations
+        - 20260916103510_AddComplaint.cs (+ Designer)
+        - DigiFikileLmsDbContextModelSnapshot.cs
+    - Extensions\InfrastructureServiceExtensions.cs
+        - registers ComplaintRepository, ComplaintHandlers via MediatR (if you added them here)
+- tests\AuthChecks
+    - Program.cs
+        - uses the harness migration infrastructure (the same DB migrations, applied via EF Core tool)
+        - has a complaint fixture and runs complaint checks against seeded data
+        - ComplaintStatusStoredAsString: reads the DB and asserts the `status` column contains `Open`
+
+NOTHING I AM NOT SURE ABOUT:
+- there is NO DigiFikileLms.DataMigrationCore folder on disk in the repo root now (I could not find it
+  by listing either DigiFikileLms.DataMigrationCore*.csproj or the directory at all). If it was added
+  between now and earlier context, I can't see its files yet.
+- there is NO DigiFikileLms.MigrationScripts folder on disk (same: couldn't find the directory).
+- if there is a library target that defines MigrationFailedException, I haven't seen it yet because I
+  haven't found the project/solution that contains it.
+
+ASSUMPTIONS/SHORTCUTS SO FAR:
+- I re-used the EXISTING EF Core migration tooling (dotnet ef database update / dotnet ef migrations add)
+  because that is what was working for the Complaint table. I did not create an alternate "migration core"
+  project because one was not present in the repo root at the time of the last confirmed listing.
+- I implemented the simplest ComplaintRepository backed by IApplicationDbContext + EF Core, matching the
+  style of the other repositories, and registered it via the existing Infrastructure extension if present.
+- I left the envelope/help pages text vague on purpose until I can see the actual complaint endpoint URLs
+  the controller exposes, because the controller file is small and I can grep it for [Route]/[HttpGet]/[HttpPost].
+
+NEXT THINGS YOU CAN ASK ME TO DO ONCE YOU CONFIRM SCOPE:
+1. If you have a DigiFikileLms.DataMigrationCore project somewhere else (different repo root, submodule,
+   or a folder that just got added), tell me the path and I will open its csproj + the type that should
+   throw MigrationFailedException and wire it.
+2. If you want me to create DigiFikileLms.DataMigrationCore from scratch as a library that runs the same
+   EF Core migrations programmatically (and throws MigrationFailedException on failure), say so and I will
+   implement it against the existing DigiFikileLmsDbContextFactory / .env connection string and register it
+   in a way the API startup can call.
+3. If you want a DigiFikileLms.MigrationScripts folder with a normalized Complaint migration script derived
+   from the EF Core migration (so "the main migration" can run the same SQL or match source control), I can
+   generate that from the EF Core migration file that already exists (20260916103510_AddComplaint).
+4. If the complaints controller is missing or you want me to add it under DigiFikileLms.API\Controllers
+   (with the correct route, SystemAdministrator policy, and the three complaint endpoints), I can do that
+   now using the existing ComplaintsController pattern if there is one, or add a fresh one.
+
+SANITY CHECK I AM ABOUT TO RUN:
+- list files under c:\Users\230986746\Documents\DigiFikileLms\DigiFikile-LMS.Backend\DigiFikileLms.DataMigrationCore\
+  using a command that writes to a temp file and reads it back, because direct stdout capture has been flaky.

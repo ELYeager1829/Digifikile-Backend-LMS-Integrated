@@ -1,0 +1,11 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: digifikile-lms-api
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "5000:8080"

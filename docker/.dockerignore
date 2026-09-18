@@ -1,0 +1,42 @@
+# Build outputs
+**/bin/
+**/obj/
+**/out/
+**/publish/
+
+# IDE
+**/.vs/
+**/.vscode/
+**/.idea/
+**/*.user
+**/*.suo
+
+# Git
+**/.git/
+**/.gitignore
+**/.gitattributes
+
+# Node
+**/node_modules/
+
+# Documentation
+**/*.md
+**/README*
+
+# Tests
+**/[Tt]ests/
+**/*Tests*/
+
+# Docker
+**/Dockerfile
+**/docker-compose*.yml
+**/.dockerignore
+
+# Secrets
+**/.env
+**/.env.*
+!**/.env.example
+
+# Local config
+**/appsettings.Development.json
+**/appsettings.Local.json

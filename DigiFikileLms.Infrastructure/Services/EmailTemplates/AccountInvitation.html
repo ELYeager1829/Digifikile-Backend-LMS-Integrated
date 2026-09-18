@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DigiFikile LMS - Account Setup</title>
+</head>
+
+<body style="
+    margin: 0;
+    padding: 0;
+    background-color: #f4f6f8;
+    font-family: Arial, Helvetica, sans-serif;
+">
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0"
+       style="background-color: #f4f6f8; padding: 40px 15px;">
+
+    <tr>
+        <td align="center">
+
+            <!-- MAIN EMAIL CONTAINER -->
+            <table width="600" cellpadding="0" cellspacing="0" border="0"
+                   style="
+                       max-width: 600px;
+                       width: 100%;
+                       background-color: #ffffff;
+                       border-radius: 10px;
+                       overflow: hidden;
+                   ">
+
+                <!-- LOGO -->
+                <tr>
+                    <td align="center"
+                        style="padding: 35px 20px 25px; background-color: #101d35;">
+
+                        <img
+                            src="data:image/png;base64,YOUR_BASE64_STRING_HERE"
+                            alt="DigiFikile LMS"
+                            width="220"
+                            style="
+                                display: block;
+                                width: 220px;
+                                max-width: 80%;
+                                height: auto;
+                                margin: 0 auto;
+                            "
+                        >
+
+                    </td>
+                </tr>
+
+
+                <!-- CONTENT -->
+                <tr>
+                    <td style="padding: 40px; color: #333333;">
+
+                        <h1 style="
+                            margin: 0 0 20px;
+                            font-size: 24px;
+                            color: #111827;
+                        ">
+                            Welcome to DigiFikile LMS
+                        </h1>
+
+                        <p style="
+                            margin: 0 0 15px;
+                            font-size: 16px;
+                            line-height: 1.6;
+                        ">
+                            Hello <strong>{{name}}</strong>,
+                        </p>
+
+                        <p style="
+                            margin: 0 0 15px;
+                            font-size: 16px;
+                            line-height: 1.6;
+                        ">
+                            Your DigiFikile LMS account has been created.
+                            You can now set up your password and access the platform.
+                        </p>
+
+                        <p style="
+                            margin: 0 0 25px;
+                            font-size: 16px;
+                            line-height: 1.6;
+                        ">
+                            Click the button below to continue:
+                        </p>
+
+
+                        {{credentials_block}}
+
+
+                        <!-- ACTION BUTTON -->
+                        <table cellpadding="0" cellspacing="0" border="0"
+                               align="center"
+                               style="margin: 0 auto 30px;">
+
+                            <tr>
+                                <td align="center"
+                                    style="
+                                        border-radius: 6px;
+                                        background-color: #1677ff;
+                                    ">
+
+                                    <a href="{{action_link}}"
+                                       style="
+                                           display: inline-block;
+                                           padding: 14px 30px;
+                                           font-size: 16px;
+                                           color: #ffffff;
+                                           text-decoration: none;
+                                           font-weight: bold;
+                                           border-radius: 6px;
+                                       ">
+                                        {{action_text}}
+                                    </a>
+
+                                </td>
+                            </tr>
+
+                        </table>
+
+
+                        <!-- SECURITY NOTICE -->
+                        <div style="
+                            background-color: #f8fafc;
+                            border-left: 4px solid #1677ff;
+                            padding: 15px;
+                            margin: 20px 0;
+                        ">
+
+                            <p style="
+                                margin: 0;
+                                font-size: 14px;
+                                line-height: 1.6;
+                                color: #475569;
+                            ">
+                                This link is unique to your account.
+                                If you did not expect this email, please contact
+                                the DigiFikile LMS support team.
+                            </p>
+
+                        </div>
+
+
+                        <!-- FALLBACK LINK -->
+                        <p style="
+                            margin: 25px 0 8px;
+                            font-size: 14px;
+                            line-height: 1.6;
+                            color: #64748b;
+                        ">
+                            If the button does not work, copy and paste this link
+                            into your browser:
+                        </p>
+
+                        <p style="
+                            margin: 0;
+                            font-size: 13px;
+                            word-break: break-all;
+                        ">
+                            <a href="{{action_link}}"
+                               style="color: #1677ff;">
+                                {{action_link}}
+                            </a>
+                        </p>
+
+                    </td>
+                </tr>
+
+
+                <!-- FOOTER -->
+                <tr>
+                    <td align="center"
+                        style="
+                            background-color: #f8fafc;
+                            padding: 25px 40px;
+                            border-top: 1px solid #e5e7eb;
+                        ">
+
+                        <p style="
+                            margin: 0 0 8px;
+                            font-size: 12px;
+                            color: #64748b;
+                        ">
+                            © 2026 DigiFikile LMS. All rights reserved.
+                        </p>
+
+                        <p style="
+                            margin: 0;
+                            font-size: 12px;
+                            color: #94a3b8;
+                        ">
+                            This is an automated message.
+                            Please do not reply directly to this email.
+                        </p>
+
+                    </td>
+                </tr>
+
+            </table>
+
+        </td>
+    </tr>
+
+</table>
+
+</body>
+</html>
